@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life OS — 포트폴리오</title>
+<style>
+:root {
+  --bg: #0f0f13;
+  --card: #1a1a24;
+  --border: #2a2a38;
+  --text: #f0f0f5;
+  --sub: #8888a8;
+  --radius: 20px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HERO ── */
+.hero {
+  text-align: center;
+  padding: 80px 24px 60px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 700px; height: 700px;
+  top: -200px; left: 50%; transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(99,102,241,0.15);
+  border: 1px solid rgba(99,102,241,0.4);
+  color: #a5b4fc;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 6px 16px;
+  border-radius: 30px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+.hero h1 {
+  font-size: clamp(2rem, 6vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.hero h1 span {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  color: var(--sub);
+  max-width: 520px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+.hero-meta {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.hero-meta-item {
+  text-align: center;
+}
+.hero-meta-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-meta-label {
+  font-size: 11px;
+  color: var(--sub);
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+/* ── GRID ── */
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sub);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+  gap: 24px;
+}
+@media (max-width: 520px) {
+  .apps-grid { grid-template-columns: 1fr; }
+}
+
+/* ── APP CARD ── */
+.app-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.app-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.app-card-accent {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+
+/* PREVIEW WINDOW */
+.preview-window {
+  margin: 20px 20px 0;
+  border-radius: 14px 14px 0 0;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-bottom: none;
+  height: 240px;
+  position: relative;
+}
+.preview-titlebar {
+  background: rgba(255,255,255,0.05);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 11px;
+  color: var(--sub);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.red { background: #ff5f57; }
+.dot.yellow { background: #febc2e; }
+.dot.green { background: #28c840; }
+.preview-body { height: calc(240px - 29px); overflow: hidden; position: relative; }
+
+/* BUDGET PREVIEW */
+.bp-header {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  padding: 12px 14px;
+  color: white;
+}
+.bp-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.bp-title { font-size: 13px; font-weight: 700; }
+.bp-month { font-size: 10px; opacity: 0.8; }
+.bp-summary { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.bp-sum-card { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 6px 8px; text-align: center; }
+.bp-sum-val { font-size: 12px; font-weight: 800; }
+.bp-sum-lbl { font-size: 8px; opacity: 0.8; margin-top: 1px; }
+.bp-list { padding: 8px 10px; }
+.bp-item { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 10px; }
+.bp-cat { display: flex; align-items: center; gap: 6px; }
+.bp-dot { width: 7px; height: 7px; border-radius: 50%; }
+.bp-name { color: #d0d0e0; }
+.bp-amount { font-weight: 700; }
+.bp-amount.out { color: #f87171; }
+.bp-amount.in { color: #4ade80; }
+.demo-tag {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: rgba(99,102,241,0.8);
+  color: white;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+/* HABIT PREVIEW */
+.hp-header { background: #8aba88; padding: 10px 12px; }
+.hp-title { font-size: 12px; font-weight: 700; color: white; margin-bottom: 8px; }
+.hp-tabs { display: flex; gap: 4px; }
+.hp-tab { font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.7); padding: 4px 10px; border-radius: 10px; }
+.hp-tab.active { background: rgba(255,255,255,0.25); color: white; }
+.hp-cal { padding: 8px 10px; background: #f0f7f0; height: 100%; }
+.hp-dow { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-bottom: 3px; }
+.hp-dow span { font-size: 8px; text-align: center; color: #7a967a; font-weight: 700; }
+.hp-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+.hp-cell { background: white; border-radius: 5px; aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; font-size: 7px; color: #3a4a3a; border: 1px solid #d5e8d5; position: relative; }
+.hp-cell.done { background: #8aba88; color: white; border-color: #6d9e6b; }
+.hp-cell.today { box-shadow: 0 0 0 2px #6d9e6b; }
+.hp-cell .chip { font-size: 6px; background: #c2dfc1; color: #3a4a3a; border-radius: 3px; padding: 0 2px; width: 90%; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.hp-cell.done .chip { background: rgba(255,255,255,0.3); color: white; }
+
+/* TRAVEL PREVIEW */
+.tp-header { background: linear-gradient(135deg, #4F7EF7, #7B5EA7); padding: 12px 14px; color: white; }
+.tp-title { font-size: 13px; font-weight: 800; margin-bottom: 6px; }
+.tp-stats { display: flex; gap: 12px; }
+.tp-stat { text-align: center; }
+.tp-stat-n { font-size: 16px; font-weight: 800; }
+.tp-stat-l { font-size: 8px; opacity: 0.8; }
+.tp-body { padding: 8px 10px; background: #F4F6FA; height: 100%; overflow: hidden; }
+.tp-card { background: white; border-radius: 10px; padding: 8px 10px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.tp-flag { font-size: 18px; line-height: 1; }
+.tp-info { flex: 1; min-width: 0; }
+.tp-dest { font-size: 11px; font-weight: 700; color: #111827; }
+.tp-date { font-size: 9px; color: #6B7280; margin-top: 1px; }
+.tp-badge { font-size: 8px; font-weight: 700; padding: 2px 7px; border-radius: 8px; white-space: nowrap; }
+.tp-badge.done { background: #dcfce7; color: #166534; }
+.tp-badge.plan { background: #dbeafe; color: #1d4ed8; }
+
+/* WORK PREVIEW */
+.wp-layout { display: flex; height: 100%; background: #f5f5f0; }
+.wp-nav { width: 110px; background: white; border-right: 1px solid #e5e5e0; padding: 10px 0; flex-shrink: 0; }
+.wp-nav-item { display: flex; align-items: center; gap: 6px; padding: 7px 10px; font-size: 9px; color: #777; }
+.wp-nav-item.active { background: #fef9c3; color: #c47d00; font-weight: 700; }
+.wp-nav-icon { font-size: 12px; }
+.wp-main { flex: 1; padding: 10px 12px; overflow: hidden; }
+.wp-page-title { font-size: 12px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
+.wp-card { background: white; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; border-left: 3px solid; }
+.wp-card.high { border-color: #ef4444; }
+.wp-card.mid { border-color: #f59e0b; }
+.wp-card.low { border-color: #10b981; }
+.wp-task-title { font-size: 10px; font-weight: 600; color: #1a1a1a; }
+.wp-task-sub { font-size: 8px; color: #777; margin-top: 2px; }
+.wp-badge { display: inline-block; font-size: 7px; font-weight: 700; padding: 1px 5px; border-radius: 4px; margin-top: 3px; }
+.wp-badge.high { background: #fee2e2; color: #b91c1c; }
+.wp-badge.mid { background: #fef3c7; color: #b45309; }
+.wp-badge.low { background: #d1fae5; color: #065f46; }
+
+/* ── CARD INFO ── */
+.app-card-info {
+  padding: 20px 24px 24px;
+}
+.app-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.app-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+.app-emoji {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.app-desc {
+  font-size: 0.88rem;
+  color: var(--sub);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.app-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.app-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.07);
+  color: var(--sub);
+  border: 1px solid var(--border);
+  letter-spacing: 0.3px;
+}
+.app-demo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: #0f0f13;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: opacity 0.15s, transform 0.15s;
+  border: none;
+  cursor: pointer;
+}
+.app-demo-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+.app-demo-btn svg {
+  transition: transform 0.2s;
+}
+.app-demo-btn:hover svg {
+  transform: translateX(3px);
+}
+
+/* ── TECH STACK ── */
+.tech-section {
+  max-width: 700px;
+  margin: 0 auto 80px;
+  text-align: center;
+  padding: 0 20px;
+}
+.tech-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sub);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.tech-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.tech-pill {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--sub);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 30px;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 32px 24px;
+  color: var(--sub);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+}
+footer a { color: var(--sub); }
+
+/* ── SCROLL HINT ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, var(--card));
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Personal Project · 2026</div>
+  <h1><span>Life Management OS</span></h1>
+  <p>일상의 돈, 습관, 여행, 업무를 하나의 시스템으로 관리하는<br>개인 맞춤형 웹 앱 모음입니다.</p>
+</div>
+
+<!-- APPS GRID -->
+<div class="section">
+  <div class="section-label">데모 앱 보기 — 데이터는 모두 가상입니다</div>
+  <div class="apps-grid">
+
+    <!-- 1. 가계부 -->
+    <div class="app-card">
+      <div class="app-card-accent" style="background:linear-gradient(90deg,#6366f1,#8b5cf6)"></div>
+      <div class="preview-window">
+        <div class="preview-titlebar">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span style="margin-left:6px">budget_mng.html</span>
+        </div>
+        <div class="preview-body">
+          <div class="demo-tag">DEMO DATA</div>
+          <div class="bp-header">
+            <div class="bp-header-top">
+              <div class="bp-title">💰 가계부</div>
+              <div class="bp-month">2025년 6월</div>
+            </div>
+            <div class="bp-summary">
+              <div class="bp-sum-card"><div class="bp-sum-val" style="color:#4ade80">+3,200,000</div><div class="bp-sum-lbl">수입</div></div>
+              <div class="bp-sum-card"><div class="bp-sum-val" style="color:#f87171">-1,847,500</div><div class="bp-sum-lbl">지출</div></div>
+              <div class="bp-sum-card"><div class="bp-sum-val">1,352,500</div><div class="bp-sum-lbl">잔액</div></div>
+            </div>
+          </div>
+          <div class="bp-list">
+            <div class="bp-item"><div class="bp-cat"><div class="bp-dot" style="background:#6366f1"></div><div class="bp-name">데모 월급 (가상)</div></div><div class="bp-amount in">+3,200,000</div></div>
+            <div class="bp-item"><div class="bp-cat"><div class="bp-dot" style="background:#f97316"></div><div class="bp-name">가짜 식비</div></div><div class="bp-amount out">-342,000</div></div>
+            <div class="bp-item"><div class="bp-cat"><div class="bp-dot" style="background:#ec4899"></div><div class="bp-name">더미 카페</div></div><div class="bp-amount out">-67,500</div></div>
+            <div class="bp-item"><div class="bp-cat"><div class="bp-dot" style="background:#14b8a6"></div><div class="bp-name">테스트 교통비</div></div><div class="bp-amount out">-98,000</div></div>
+            <div class="bp-item"><div class="bp-cat"><div class="bp-dot" style="background:#a855f7"></div><div class="bp-name">샘플 쇼핑</div></div><div class="bp-amount out">-215,000</div></div>
+          </div>
+          <div class="scroll-hint"></div>
+        </div>
+      </div>
+      <div class="app-card-info">
+        <div class="app-card-top">
+          <div>
+            <div class="app-name">💰 가계부</div>
+          </div>
+          <div class="app-emoji"></div>
+        </div>
+        <div class="app-desc">수입·지출 입력, 카테고리별 통계, 할부 관리, 구매 예정 위시리스트까지 한 곳에서. 월별 잔액을 한눈에 파악할 수 있습니다.</div>
+        <div class="app-tags">
+          <span class="app-tag">홈 대시보드</span>
+          <span class="app-tag">달력 뷰</span>
+          <span class="app-tag">통계 차트</span>
+          <span class="app-tag">할부 관리</span>
+          <span class="app-tag">위시리스트</span>
+        </div>
+        <a href="demo_budget.html" class="app-demo-btn">
+          데모 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 2. 습관 트래커 -->
+    <div class="app-card">
+      <div class="app-card-accent" style="background:linear-gradient(90deg,#22c55e,#86efac)"></div>
+      <div class="preview-window">
+        <div class="preview-titlebar">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span style="margin-left:6px">habit_tracker.html</span>
+        </div>
+        <div class="preview-body">
+          <div class="demo-tag">DEMO DATA</div>
+          <div class="hp-header">
+            <div class="hp-title">🌿 Habit Tracker</div>
+            <div class="hp-tabs">
+              <div class="hp-tab active">월 종합</div>
+              <div class="hp-tab">항목별</div>
+              <div class="hp-tab">버킷리스트</div>
+            </div>
+          </div>
+          <div class="hp-cal">
+            <div class="hp-dow">
+              <span style="color:#e07070">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span style="color:#5588ee">토</span>
+            </div>
+            <div class="hp-grid">
+              <div class="hp-cell"></div>
+              <div class="hp-cell done">1<div class="chip">물8잔✓</div></div>
+              <div class="hp-cell done">2<div class="chip">물8잔✓</div></div>
+              <div class="hp-cell">3<div class="chip">물8잔</div></div>
+              <div class="hp-cell done">4<div class="chip">물8잔✓</div></div>
+              <div class="hp-cell done">5<div class="chip">물8잔✓</div></div>
+              <div class="hp-cell">6</div>
+              <div class="hp-cell">7</div>
+              <div class="hp-cell done">8<div class="chip">독서✓</div></div>
+              <div class="hp-cell done">9<div class="chip">독서✓</div></div>
+              <div class="hp-cell done">10<div class="chip">독서✓</div></div>
+              <div class="hp-cell">11</div>
+              <div class="hp-cell done">12<div class="chip">독서✓</div></div>
+              <div class="hp-cell">13</div>
+              <div class="hp-cell">14</div>
+              <div class="hp-cell done">15<div class="chip">운동✓</div></div>
+              <div class="hp-cell done today">16<div class="chip">오늘</div></div>
+              <div class="hp-cell"></div>
+              <div class="hp-cell"></div>
+              <div class="hp-cell"></div>
+              <div class="hp-cell"></div>
+              <div class="hp-cell"></div>
+            </div>
+          </div>
+          <div class="scroll-hint" style="background:linear-gradient(to bottom,transparent,#f0f7f0)"></div>
+        </div>
+      </div>
+      <div class="app-card-info">
+        <div class="app-card-top">
+          <div><div class="app-name">🌿 습관 트래커</div></div>
+        </div>
+        <div class="app-desc">매일 루틴, 집안일, 식물 관리를 달력·통계로 추적. 월별 달성률을 한눈에 확인하고 버킷리스트로 목표도 관리합니다.</div>
+        <div class="app-tags">
+          <span class="app-tag">월 달력 뷰</span>
+          <span class="app-tag">해빗 트래커</span>
+          <span class="app-tag">집안일 체크</span>
+          <span class="app-tag">식물 케어</span>
+          <span class="app-tag">버킷리스트</span>
+        </div>
+        <a href="demo_habit.html" class="app-demo-btn">
+          데모 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 3. 여행 기록 -->
+    <div class="app-card">
+      <div class="app-card-accent" style="background:linear-gradient(90deg,#4F7EF7,#7B5EA7)"></div>
+      <div class="preview-window">
+        <div class="preview-titlebar">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span style="margin-left:6px">travel.html</span>
+        </div>
+        <div class="preview-body">
+          <div class="demo-tag">DEMO DATA</div>
+          <div class="tp-header">
+            <div class="tp-title">✈️ 여행기록</div>
+            <div class="tp-stats">
+              <div class="tp-stat"><div class="tp-stat-n">7</div><div class="tp-stat-l">총 여행</div></div>
+              <div class="tp-stat"><div class="tp-stat-n">5</div><div class="tp-stat-l">나라</div></div>
+              <div class="tp-stat"><div class="tp-stat-n">18</div><div class="tp-stat-l">도시</div></div>
+            </div>
+          </div>
+          <div class="tp-body">
+            <div class="tp-card">
+              <div class="tp-flag">🇯🇵</div>
+              <div class="tp-info">
+                <div class="tp-dest">🗺️ 가짜 오사카 (DEMO)</div>
+                <div class="tp-date">2025.03.14 – 03.18 · 4박5일</div>
+              </div>
+              <div class="tp-badge done">다녀옴</div>
+            </div>
+            <div class="tp-card">
+              <div class="tp-flag">🇹🇼</div>
+              <div class="tp-info">
+                <div class="tp-dest">🗺️ 샘플 타이베이 (DEMO)</div>
+                <div class="tp-date">2025.06.01 – 06.04 · 3박4일</div>
+              </div>
+              <div class="tp-badge done">다녀옴</div>
+            </div>
+            <div class="tp-card">
+              <div class="tp-flag">🇫🇷</div>
+              <div class="tp-info">
+                <div class="tp-dest">🗺️ 더미 파리 (DEMO)</div>
+                <div class="tp-date">2026.01.10 – 01.18 · 계획 중</div>
+              </div>
+              <div class="tp-badge plan">계획 중</div>
+            </div>
+          </div>
+          <div class="scroll-hint" style="background:linear-gradient(to bottom,transparent,#F4F6FA)"></div>
+        </div>
+      </div>
+      <div class="app-card-info">
+        <div class="app-card-top">
+          <div><div class="app-name">✈️ 여행 기록</div></div>
+        </div>
+        <div class="app-desc">다녀온 여행 기록, 앞으로의 계획, 체크리스트, 여행 예산 및 지출까지 관리하는 여행 전용 앱입니다.</div>
+        <div class="app-tags">
+          <span class="app-tag">여행 기록</span>
+          <span class="app-tag">여행 계획</span>
+          <span class="app-tag">체크리스트</span>
+          <span class="app-tag">예산 관리</span>
+          <span class="app-tag">지출 내역</span>
+        </div>
+        <a href="demo_travel.html" class="app-demo-btn">
+          데모 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 4. 회사 생활 -->
+    <div class="app-card">
+      <div class="app-card-accent" style="background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div>
+      <div class="preview-window">
+        <div class="preview-titlebar">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span style="margin-left:6px">worknstudy.html</span>
+        </div>
+        <div class="preview-body">
+          <div class="demo-tag">DEMO DATA</div>
+          <div class="wp-layout">
+            <div class="wp-nav">
+              <div class="wp-nav-item active"><span class="wp-nav-icon">📊</span>대시보드</div>
+              <div class="wp-nav-item"><span class="wp-nav-icon">📅</span>캘린더</div>
+              <div class="wp-nav-item"><span class="wp-nav-icon">📋</span>할 일</div>
+              <div class="wp-nav-item"><span class="wp-nav-icon">🌴</span>휴가</div>
+              <div class="wp-nav-item"><span class="wp-nav-icon">📝</span>회의록</div>
+              <div class="wp-nav-item"><span class="wp-nav-icon">📚</span>커리큘럼</div>
+            </div>
+            <div class="wp-main">
+              <div class="wp-page-title">대시보드</div>
+              <div class="wp-card high">
+                <div class="wp-task-title">🔴 가짜 긴급 보고서 (DEMO)</div>
+                <div class="wp-task-sub">마감: 2025-07-10</div>
+                <span class="wp-badge high">긴급</span>
+              </div>
+              <div class="wp-card mid">
+                <div class="wp-task-title">🟡 샘플 회의 준비 (DEMO)</div>
+                <div class="wp-task-sub">마감: 2025-07-14</div>
+                <span class="wp-badge mid">중간</span>
+              </div>
+              <div class="wp-card low">
+                <div class="wp-task-title">🟢 더미 자료 정리 (DEMO)</div>
+                <div class="wp-task-sub">마감: 2025-07-20</div>
+                <span class="wp-badge low">여유</span>
+              </div>
+            </div>
+          </div>
+          <div class="scroll-hint" style="background:linear-gradient(to bottom,transparent,#f5f5f0)"></div>
+        </div>
+      </div>
+      <div class="app-card-info">
+        <div class="app-card-top">
+          <div><div class="app-name">📋 회사 생활</div></div>
+        </div>
+        <div class="app-desc">업무 할 일 목록, 달력, 회의록, 휴가 관리를 한 곳에서. 학습 모드로 전환하면 커리큘럼 계획도 관리할 수 있습니다.</div>
+        <div class="app-tags">
+          <span class="app-tag">대시보드</span>
+          <span class="app-tag">업무/학습 모드</span>
+          <span class="app-tag">회의록</span>
+          <span class="app-tag">휴가 관리</span>
+          <span class="app-tag">커리큘럼</span>
+        </div>
+        <a href="demo_work.html" class="app-demo-btn">
+          데모 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<footer>
+  <p>© 2025 Personal Life Management System · 포트폴리오용 데모</p>
+  <p style="margin-top:6px;font-size:11px">⚠️ 모든 데모 데이터는 가상의 샘플입니다. 실제 데이터와 무관합니다.</p>
+</footer>
+
+</body>
+</html>

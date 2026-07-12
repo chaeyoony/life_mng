@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌿 Habit Tracker — DEMO</title>
+<style>
+:root{
+  --green:#8aba88;--green-dark:#6d9e6b;--green-light:#c2dfc1;
+  --green-bg:#f0f7f0;--text:#3a4a3a;--text-sub:#7a967a;--border:#d5e8d5;
+  --red:#e07070;--blue:#5588ee;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--green-bg);color:var(--text);min-height:100vh;}
+
+/* DEMO BANNER */
+.demo-banner{background:linear-gradient(135deg,#064e3b,#065f46);color:#6ee7b7;padding:10px 16px;font-size:11px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;}
+.demo-banner a{color:#34d399;text-decoration:none;padding:3px 8px;background:rgba(255,255,255,0.1);border-radius:6px;}
+
+/* HEADER */
+header{background:var(--green);color:#fff;padding:10px 16px 0;position:sticky;top:0;z-index:100;}
+.header-row1{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;}
+.logo{font-size:17px;font-weight:700;}
+.demo-chip{font-size:9px;font-weight:800;background:rgba(0,0,0,.2);color:#fff;padding:3px 8px;border-radius:10px;letter-spacing:.5px;}
+.view-toggle{display:flex;border-top:1px solid rgba(255,255,255,.2);}
+.view-btn{flex:1;padding:9px 0;background:transparent;color:rgba(255,255,255,.7);border:none;cursor:pointer;font-size:13px;font-weight:600;border-bottom:2.5px solid transparent;transition:.15s;}
+.view-btn.active{color:#fff;border-bottom-color:#fff;}
+
+main{padding:14px 12px 90px;max-width:700px;margin:0 auto;}
+
+/* CALENDAR VIEW */
+.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px;}
+.cal-dow span{text-align:center;font-size:11px;font-weight:700;color:var(--text-sub);padding:4px 0;}
+.cal-dow span:first-child{color:var(--red);} .cal-dow span:last-child{color:var(--blue);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-cell{background:#fff;border-radius:10px;padding:5px 3px 4px;cursor:pointer;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:2px;min-height:68px;position:relative;}
+.cal-cell.empty{background:transparent;border-color:transparent;pointer-events:none;}
+.cal-day-num{font-size:12px;font-weight:600;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.cal-cell.today .cal-day-num{background:var(--green);color:#fff;}
+.cal-cell.sunday .cal-day-num{color:var(--red);}
+.cal-cell.saturday .cal-day-num{color:var(--blue);}
+.chip{font-size:8px;font-weight:600;border-radius:4px;padding:1px 4px;color:#fff;width:90%;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.done-mark{position:absolute;top:3px;right:3px;font-size:8px;}
+
+/* HABIT LIST */
+.month-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.month-title{font-size:16px;font-weight:700;}
+.demo-badge{font-size:9px;font-weight:800;background:var(--green-light);color:var(--green-dark);padding:3px 8px;border-radius:10px;letter-spacing:.5px;}
+.habit-section{background:#fff;border-radius:14px;border:1px solid var(--border);margin-bottom:10px;overflow:hidden;}
+.section-label{font-size:11px;font-weight:800;color:var(--text-sub);padding:10px 14px 6px;letter-spacing:.5px;text-transform:uppercase;}
+.habit-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--border);}
+.habit-color{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.habit-name{flex:1;font-size:13px;font-weight:600;}
+.habit-demo{font-size:9px;color:var(--text-sub);font-weight:600;}
+.habit-rate{font-size:12px;font-weight:800;color:var(--green-dark);}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin:4px 0 0;}
+.progress-fill{height:100%;border-radius:2px;background:var(--green);}
+
+/* BUCKET LIST */
+.bucket-card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.bucket-icon{font-size:1.5rem;}
+.bucket-info{flex:1;}
+.bucket-title{font-size:14px;font-weight:700;}
+.bucket-sub{font-size:11px;color:var(--text-sub);margin-top:2px;}
+.bucket-check{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.bucket-check.done{background:var(--green);color:#fff;}
+.bucket-check.todo{background:var(--border);}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#fff;border-radius:28px;box-shadow:0 4px 24px rgba(0,0,0,.18);padding:6px 8px;display:flex;gap:2px;z-index:100;}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 16px;cursor:pointer;border:none;background:none;color:var(--text-sub);font-size:10px;font-weight:600;border-radius:20px;transition:all .15s;}
+.nav-item.active{background:var(--green-light);color:var(--green-dark);}
+.demo-wm{position:fixed;bottom:90px;right:14px;background:rgba(138,186,136,.15);border:1px solid rgba(138,186,136,.4);color:var(--green-dark);font-size:9px;font-weight:800;padding:4px 8px;border-radius:6px;letter-spacing:1px;}
+.demo-note{background:#fff;border:1px dashed var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:11px;color:var(--text-sub);text-align:center;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  ⚠️ DEMO DATA — 모든 습관, 달성률은 가상의 샘플 데이터입니다
+  <a href="portfolio.html">← 포트폴리오</a>
+</div>
+
+<header>
+  <div class="header-row1">
+    <div class="logo">🌿 Habit Tracker</div>
+    <div class="demo-chip">⚠️ DEMO DATA</div>
+  </div>
+  <div class="view-toggle">
+    <button class="view-btn active" onclick="switchTab('calendar', this)">월 종합</button>
+    <button class="view-btn" onclick="switchTab('detail', this)">항목별</button>
+    <button class="view-btn" onclick="switchTab('bucket', this)">버킷리스트</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- CALENDAR TAB -->
+  <div id="tab-calendar">
+    <div class="month-header" style="margin-top:4px">
+      <div class="month-title">2025년 6월 <span style="font-size:13px;color:var(--text-sub)">(가짜)</span></div>
+      <div class="demo-badge">DEMO DATA</div>
+    </div>
+    <div class="demo-note">
+      🌿 아래 달력의 색칠된 칸은 습관을 완료한 날입니다.<br>
+      <strong>모든 데이터는 이 앱이 어떻게 작동하는지 보여주기 위한 가짜 샘플</strong>입니다.
+    </div>
+    <div class="cal-dow">
+      <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+
+  <!-- DETAIL TAB -->
+  <div id="tab-detail" style="display:none">
+    <div class="month-header" style="margin-top:4px">
+      <div class="month-title">항목별 달성률 <span style="font-size:13px;color:var(--text-sub)">(가짜)</span></div>
+      <div class="demo-badge">DEMO DATA</div>
+    </div>
+    <div class="demo-note">⚠️ 아래의 모든 습관명, 달성률은 <strong>가상 데이터</strong>입니다. 실제 사용 시 본인의 습관을 추가해 추적합니다.</div>
+
+    <div class="habit-section">
+      <div class="section-label">🌿 해빗 트래커 (DEMO)</div>
+      <div class="habit-row">
+        <div class="habit-color" style="background:#6366f1"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between">
+            <div class="habit-name">매일 물 8잔 마시기 <span class="habit-demo">(가짜 습관)</span></div>
+            <div class="habit-rate">77%</div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:77%;background:#6366f1"></div></div>
+        </div>
+      </div>
+      <div class="habit-row">
+        <div class="habit-color" style="background:#f97316"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between">
+            <div class="habit-name">하루 30분 독서 <span class="habit-demo">(가짜 습관)</span></div>
+            <div class="habit-rate">63%</div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:63%;background:#f97316"></div></div>
+        </div>
+      </div>
+      <div class="habit-row">
+        <div class="habit-color" style="background:#22c55e"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between">
+            <div class="habit-name">영어 단어 10개 암기 <span class="habit-demo">(가짜 습관)</span></div>
+            <div class="habit-rate">87%</div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:87%;background:#22c55e"></div></div>
+        </div>
+      </div>
+      <div class="habit-row">
+        <div class="habit-color" style="background:#ec4899"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between">
+            <div class="habit-name">샘플 운동 30분 <span class="habit-demo">(가짜 습관)</span></div>
+            <div class="habit-rate">50%</div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:50%;background:#ec4899"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="habit-section">
+      <div class="section-label">🧹 집안일 (DEMO)</div>
+      <div class="habit-row">
+        <div class="habit-color" style="background:#14b8a6"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between">
+            <div class="habit-name">가짜 청소기 돌리기 <span class="habit-demo">(가짜)</span></div>
+            <div class="habit-rate">2/4회</div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:50%;background:#14b8a6"></div></div>
+        </div>
+      </div>
+      <div class="habit-row">
+        <div class="habit-color" style="background:#a855f7"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between">
+            <div class="habit-name">더미 빨래 돌리기 <span class="habit-demo">(가짜)</span></div>
+            <div class="habit-rate">3/4회</div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:75%;background:#a855f7"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="habit-section">
+      <div class="section-label">🪴 식물 케어 (DEMO)</div>
+      <div class="habit-row">
+        <div class="habit-color" style="background:#84cc16"></div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between">
+            <div class="habit-name">샘플 몬스테라 물주기 <span class="habit-demo">(가짜)</span></div>
+            <div class="habit-rate">4/4회</div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:100%;background:#84cc16"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUCKET LIST TAB -->
+  <div id="tab-bucket" style="display:none">
+    <div class="month-header" style="margin-top:4px">
+      <div class="month-title">버킷리스트 <span style="font-size:13px;color:var(--text-sub)">(가짜)</span></div>
+      <div class="demo-badge">DEMO DATA</div>
+    </div>
+    <div class="demo-note">⚠️ 아래 항목들은 모두 <strong>가상 목표</strong>입니다. 실제 사용 시 본인의 목표를 입력해 관리합니다.</div>
+
+    <div class="bucket-card">
+      <div class="bucket-icon">🗺️</div>
+      <div class="bucket-info">
+        <div class="bucket-title">가짜 해외여행 가기 (DEMO)</div>
+        <div class="bucket-sub">2025년 안에 · 데모 목표</div>
+      </div>
+      <div class="bucket-check done">✓</div>
+    </div>
+    <div class="bucket-card">
+      <div class="bucket-icon">📚</div>
+      <div class="bucket-info">
+        <div class="bucket-title">샘플 책 12권 읽기 (DEMO)</div>
+        <div class="bucket-sub">진행: 가짜 7/12권</div>
+      </div>
+      <div class="bucket-check todo"></div>
+    </div>
+    <div class="bucket-card">
+      <div class="bucket-icon">🏃</div>
+      <div class="bucket-info">
+        <div class="bucket-title">더미 마라톤 완주 (DEMO)</div>
+        <div class="bucket-sub">10km · 데모 목표</div>
+      </div>
+      <div class="bucket-check done">✓</div>
+    </div>
+    <div class="bucket-card">
+      <div class="bucket-icon">🎸</div>
+      <div class="bucket-info">
+        <div class="bucket-title">테스트 악기 배우기 (DEMO)</div>
+        <div class="bucket-sub">기타 · 데모 목표</div>
+      </div>
+      <div class="bucket-check todo"></div>
+    </div>
+    <div class="bucket-card">
+      <div class="bucket-icon">💻</div>
+      <div class="bucket-info">
+        <div class="bucket-title">가짜 개인 프로젝트 완성 (DEMO)</div>
+        <div class="bucket-sub">이 앱이 바로 그것! · 달성 ✓</div>
+      </div>
+      <div class="bucket-check done">✓</div>
+    </div>
+  </div>
+
+</main>
+
+<div class="bottom-nav">
+  <button class="nav-item active" onclick="switchTab('calendar',this)">📅 달력</button>
+  <button class="nav-item" onclick="switchTab('detail',this)">📋 항목별</button>
+  <button class="nav-item" onclick="switchTab('bucket',this)">🎯 버킷</button>
+</div>
+<div class="demo-wm">⚠️ DEMO DATA</div>
+
+<script>
+// Build calendar with fake data
+const doneMap = {1:['물8잔'],2:['물8잔','독서'],3:[],4:['물8잔'],5:['물8잔','독서'],6:[],7:[],
+  8:['독서'],9:['독서'],10:['독서','영어'],11:[],12:['독서'],13:[],14:[],
+  15:['운동','물8잔'],16:['오늘'],17:[],18:[],19:[],20:[],21:[],22:['영어'],
+  23:['물8잔','영어'],24:['독서'],25:[],26:[],27:[],28:['물8잔','운동'],29:[],30:[]};
+const colors = {'물8잔':'#6366f1','독서':'#f97316','영어':'#22c55e','운동':'#ec4899','오늘':'#8aba88'};
+const grid = document.getElementById('calGrid');
+// June 2025 starts on Sunday(0)
+for(let i=0;i<0;i++) { const e=document.createElement('div'); e.className='cal-cell empty'; grid.appendChild(e); }
+for(let d=1;d<=30;d++){
+  const cell=document.createElement('div');
+  const dow=d%7; // rough
+  cell.className='cal-cell'+(d===16?' today':'')+(d%7===0?' sunday':d%7===6?' saturday':'');
+  const done=doneMap[d]||[];
+  const num=document.createElement('div'); num.className='cal-day-num'; num.textContent=d;
+  cell.appendChild(num);
+  done.slice(0,2).forEach(h=>{
+    const c=document.createElement('div'); c.className='chip';
+    c.style.background=colors[h]||'#8aba88'; c.textContent=h; cell.appendChild(c);
+  });
+  grid.appendChild(cell);
+}
+
+function switchTab(name, btn) {
+  ['calendar','detail','bucket'].forEach(t=>document.getElementById('tab-'+t).style.display='none');
+  document.getElementById('tab-'+name).style.display='block';
+  if(btn){document.querySelectorAll('.view-btn, .nav-item').forEach(b=>b.classList.remove('active')); btn.classList.add('active');}
+}
+</script>
+</body>
+</html>
