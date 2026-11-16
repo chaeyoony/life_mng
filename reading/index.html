@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>채윤 독서생활</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="독서생활">
+<meta name="theme-color" content="#faf6ef">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1>📚 채윤 독서생활</h1>
+    <button id="btnLogout" class="ghost small" hidden>로그아웃</button>
+  </header>
+  <main id="main"></main>
+  <nav id="tabbar" class="tabbar" hidden>
+    <button data-tab="library"><span>📖</span>서재</button>
+    <button data-tab="calendar"><span>🗓️</span>캘린더</button>
+    <button data-tab="stats"><span>📊</span>연간</button>
+  </nav>
+  <button id="fab" class="fab" hidden aria-label="기록 추가">＋</button>
+</div>
+<div id="overlay" class="overlay" hidden><div class="sheet" id="sheet"></div></div>
+<div id="toast" class="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
